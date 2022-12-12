@@ -11,11 +11,8 @@ import Table from '../components/Table/Table';
 import Pagination from '../components/Pagination/Pagination';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import MainAppBar  from '../components/AppBar/MainAppBar';
+import MainAppBar from '../components/AppBar/MainAppBar';
 import Loader from '../components/Loader/Loader';
-
-
-
 
 export const Main = () => {
   const dispatch = useAppDispatch();
@@ -29,16 +26,16 @@ export const Main = () => {
   const [modalOpen, setModalOpen] = useState(false);
 
   const showBookInfo = (row) => {
-    dispatch(setBookPreviewData({data: row, visibility: true}));
+    dispatch(setBookPreviewData({ data: row, visibility: true }));
   }
 
   const handleTableHeaderSelect = (header) => {
     switch (header.sortType) {
       case 'string':
-        dispatch(setSortedByString({direction: header.sortDirection, key: header.key}))
+        dispatch(setSortedByString({ direction: header.sortDirection, key: header.key }))
         break;
       case 'number':
-        dispatch(setSortedByNumber({direction: header.sortDirection, key: header.key}))
+        dispatch(setSortedByNumber({ direction: header.sortDirection, key: header.key }))
         break;
       default:
         break;
@@ -49,7 +46,7 @@ export const Main = () => {
     dispatch(setBookPreviewVisibility(false))
     switch (payload.actionType) {
       case 'EDIT':
-        navigation('/form', {state: {id: payload.id}});
+        navigation('/form', { state: { id: payload.id } });
         break;
       case 'DELETE':
         dispatch(deleteBook(payload.id))
@@ -94,29 +91,29 @@ export const Main = () => {
 
   return (
     <Box display="flex">
-       <ConfirmationDialog isOpen={modalOpen} description={requestStatus.message} handleClose={handleDialogOnClose} buttonText={'Okay'} />
+      <ConfirmationDialog isOpen={modalOpen} description={requestStatus.message} handleClose={handleDialogOnClose} buttonText={'Okay'} />
       <Stack width="100%" flex={1} direction={'row'} spacing={0}>
         <Box height="100vh" flex={1} display="flex" flexDirection="column">
           <AppBar>
             <MainAppBar />
           </AppBar>
-          <Box overflow="auto" display="flex" flex="1"  sx={{ paddingLeft: 5 }}>
-            {loading 
-            ? 
-             <Loader />
-            : <Table 
+          <Box overflow="auto" display="flex" flex="1" sx={{ paddingLeft: 5 }}>
+            {loading
+              ?
+              <Loader />
+              : <Table
                 onRowSelect={(row) => { showBookInfo(row) }}
                 onHeaderSelect={(header) => { handleTableHeaderSelect(header) }}
                 data={books}
                 menu={menu}
-                onMenuClick={(item) => {handleTableMenuClick(item)}}
+                onMenuClick={(item) => { handleTableMenuClick(item) }}
                 headers={HEADERS}
                 activeRowId={activeRowId.id}
               />}
           </Box>
           <Pagination overflow={'unset'} />
         </Box>
-        {isBookPreviewVisible && <SidePreview data={bookPreviewData}  />}
+        {isBookPreviewVisible && <SidePreview data={bookPreviewData} />}
       </Stack>
     </Box>
   )
